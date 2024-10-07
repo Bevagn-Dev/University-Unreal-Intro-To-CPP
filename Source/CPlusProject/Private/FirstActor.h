@@ -1,8 +1,12 @@
 ﻿#pragma once
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
 #include "FirstActor.generated.h"
-#include "Components/ArrowComponent.h"
+
+class UBoxComponent;
+class UArrowComponent;
 
 UCLASS(Abstract)
 class CPLUSPROJECT_API AFirstActor : public AActor
@@ -13,12 +17,16 @@ public:
 	AFirstActor();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<USceneComponent> _Root;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UBoxComponent> _Collider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> _Mesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UArrowComponent> _Arrow;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<URotatingMovementComponent> _Rotater;
+
+	UFUNCTION()
+	void Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	virtual void BeginPlay() override;
 };
