@@ -1,5 +1,6 @@
 ﻿#include "GM_FPS.h"
- 
+
+#include "GameRule.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
  
@@ -65,6 +66,21 @@ void AGM_FPS::OnMatchStateSet()
 
 void AGM_FPS::HandleMatchIsWaitingToStart()
 {
+	TArray<UActorComponent*> outComponents;
+	GetComponents(outComponents);
+	
+	for(UActorComponent* comp : outComponents)
+	{
+		if(UGameRule* rule = Cast<UGameRule>(comp))
+		{
+			_GameRuleManagers.Add(rule);
+			rule->Init();
+			rule->OnComplete.AddUniqueDynamic(this,&AGM_FPS::Handle_GameRuleCompleted);
+			rule->OnPointsScored.AddUniqueDynamic(this, &AGM_FPS::Handle_GameRule_PointsScored);
+			_GameRulesLeft++;
+		}
+	}
+	
 	GetWorld()->GetTimerManager().SetTimer(_TimerDecreaseCountdown, this, &AGM_FPS::DecreaseCountdown, 1.f, false);
 	Super::HandleMatchIsWaitingToStart();
 }
@@ -82,7 +98,18 @@ void AGM_FPS::DecreaseCountdown()
 		GetWorld()->GetTimerManager().SetTimer(_TimerDecreaseCountdown, this, &AGM_FPS::DecreaseCountdown, 1.f, false);
 	}
 }
- 
+
+void AGM_FPS::Handle_GameRuleCompleted()
+{
+	
+}
+
+void AGM_FPS::Handle_GameRule_PointsScored(AController* scorer, int points)
+{
+	
+}
+
+
 void AGM_FPS::HandleMatchHasStarted()
 {
 	DefaultPawnClass = _MatchPawn;
@@ -90,6 +117,7 @@ void AGM_FPS::HandleMatchHasStarted()
 	{
 		RestartPlayer(controller);
 	}
+	
 	Super::HandleMatchHasStarted();
 }
  

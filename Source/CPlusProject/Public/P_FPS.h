@@ -5,7 +5,8 @@
 #include "GameFramework/Character.h"
 
 #include "P_FPS.generated.h"
- 
+
+class UInputMappingContext;
 class UHealthComponent;
 class UCharacterMovementComponent;
 class UCameraComponent;
@@ -23,6 +24,8 @@ public:
 	virtual void Input_FireReleased_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
 	virtual void Input_JumpReleased_Implementation() override;
+	virtual void Input_Crouch_Implementation() override;
+
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
     
@@ -36,4 +39,11 @@ protected:
  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
+	
+	virtual void BeginPlay() override;
+private:
+	UFUNCTION()
+	void Handle_HealthDead(AController* causer);
+	UFUNCTION()
+	void Handle_Damaged(float current, float max, float change);
 };

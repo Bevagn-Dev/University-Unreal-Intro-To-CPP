@@ -4,6 +4,9 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthDeadSignature, AController*, causer);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthDamagedSignature, float, newHealth,
+	float, maxHealth, float, changeInHealth);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CPLUSPROJECT_API UHealthComponent : public UActorComponent
@@ -12,6 +15,11 @@ class CPLUSPROJECT_API UHealthComponent : public UActorComponent
 
 public:
 	UHealthComponent();
+
+	UPROPERTY(BlueprintAssignable)
+	FHealthDeadSignature OnDeath;
+	UPROPERTY(BlueprintAssignable)
+	FHealthDamagedSignature OnDamaged;
 
 protected:
 
@@ -24,5 +32,6 @@ protected:
 
 private:
 	UFUNCTION()
-	void DamageTaken(AActor* DamagedActor, float damage, const UDamageType* damageType, AController* instigator, AActor* causer);
+	void DamageTaken(AActor* DamagedActor, float damage, const UDamageType* damageType,
+		AController* instigator, AActor* causer);
 };

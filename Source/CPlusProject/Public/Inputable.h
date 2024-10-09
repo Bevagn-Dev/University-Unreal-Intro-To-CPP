@@ -27,7 +27,10 @@ public:
 	void Input_FirePressed();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_FireReleased();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_Crouch();
 
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
 };

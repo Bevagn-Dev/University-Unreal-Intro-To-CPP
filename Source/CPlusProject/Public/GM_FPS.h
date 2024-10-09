@@ -3,7 +3,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
 #include "GM_FPS.generated.h"
- 
+
+class UGameRule;
+
 UCLASS(Abstract)
 class CPLUSPROJECT_API AGM_FPS : public AGameMode
 {
@@ -35,7 +37,17 @@ protected:
 	FTimerHandle _TimerDecreaseCountdown;
 	UPROPERTY(EditAnywhere, Category="Match Management")
 	TSubclassOf<APawn> _MatchPawn;
- 
+
+	int _GameRulesLeft;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TObjectPtr<UGameRule>> _GameRuleManagers;
+	
 	UFUNCTION()
 	void DecreaseCountdown();
+
+private:
+	UFUNCTION()
+	void Handle_GameRuleCompleted();
+	UFUNCTION()
+	void Handle_GameRule_PointsScored(AController* scorer, int points);
 };
