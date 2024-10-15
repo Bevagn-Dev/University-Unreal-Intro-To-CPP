@@ -34,7 +34,8 @@ protected:
 	void JumpReleased();
 	void FirePressed();
 	void FireReleased();
-	void Crouched();
+	void CrouchPressed();
+	void CrouchReleased();
 
 	virtual void OnPossess(APawn* InPawn) override;
 };

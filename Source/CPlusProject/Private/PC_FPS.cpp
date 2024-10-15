@@ -18,7 +18,8 @@ void APC_FPS::SetupInputComponent()
        EIP->BindAction(_JumpAction, ETriggerEvent::Completed, this, &APC_FPS::JumpReleased);
        EIP->BindAction(_FireAction, ETriggerEvent::Triggered, this, &APC_FPS::FirePressed);
        EIP->BindAction(_FireAction, ETriggerEvent::Completed, this, &APC_FPS::FireReleased);
-       EIP->BindAction(_CrouchAction, ETriggerEvent::Completed, this, &APC_FPS::Crouched);
+       EIP->BindAction(_CrouchAction, ETriggerEvent::Triggered, this, &APC_FPS::CrouchPressed);
+       EIP->BindAction(_CrouchAction, ETriggerEvent::Completed, this, &APC_FPS::CrouchReleased);
     }
 }
  
@@ -92,17 +93,27 @@ void APC_FPS::FireReleased()
     }
 }
 
-void APC_FPS::Crouched()
+void APC_FPS::CrouchPressed()
 {
    if(APawn* currentPawn = GetPawn())
    {
       if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
       {
-         IInputable::Execute_Input_Crouch(currentPawn);
+         IInputable::Execute_Input_CrouchPressed(currentPawn);
       }
    }
 }
 
+void APC_FPS::CrouchReleased()
+{
+   if(APawn* currentPawn = GetPawn())
+   {
+      if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+      {
+         IInputable::Execute_Input_CrouchReleased(currentPawn);
+      }
+   }
+}
 void APC_FPS::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);

@@ -24,6 +24,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _Lifespan;
 
 private:
 	UFUNCTION()

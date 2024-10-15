@@ -43,17 +43,23 @@ void AP_FPS::Input_JumpReleased_Implementation()
 	ACharacter::StopJumping();
 }
 
-void AP_FPS::Input_Crouch_Implementation()
+void AP_FPS::Input_CrouchPressed_Implementation()
 {
 	ACharacter::Crouch();
 }
 
+void AP_FPS::Input_CrouchReleased_Implementation()
+{
+	ACharacter::UnCrouch();
+}
+
 void AP_FPS::Input_Look_Implementation(FVector2D value)
 {
-	value.Y = FMath::Clamp(value.Y, 0.00f, 0.01f);
-	value.X = FMath::Clamp(value.X, -0.01f, -0.01f);
+	FRotator currentRotation = _Camera->GetRelativeRotation();
+	float newPitch = FMath::Clamp(currentRotation.Pitch + value.Y,-89.0f, 89.0f);
+	
 	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
-	_Camera->AddLocalRotation(FRotator(value.Y, 0.0f, 0.0f));
+	_Camera->SetRelativeRotation(FRotator(newPitch, 0.0f, 0.0f));
 }
  
 void AP_FPS::Input_Move_Implementation(FVector2D value)
