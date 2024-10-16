@@ -4,6 +4,7 @@
 #include "GameRule.h"
 #include "GameRule_Target.generated.h"
 
+class UTargetComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGRTargetRequestSignature);
 

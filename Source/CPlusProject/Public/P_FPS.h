@@ -6,6 +6,8 @@
 
 #include "P_FPS.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthUpdatedSignature, float, currentHealth);
+
 class AWeapon_Base;
 class UInputMappingContext;
 class UHealthComponent;
@@ -32,7 +34,10 @@ public:
 	virtual void Input_Move_Implementation(FVector2D value) override;
     
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
- 
+
+	UPROPERTY(BlueprintAssignable)
+	FHealthUpdatedSignature OnPawnDamaged;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> _Camera;
@@ -50,6 +55,7 @@ protected:
 	TObjectPtr<UInputMappingContext> _InputMapping;
 	
 	virtual void BeginPlay() override;
+	
 private:
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);

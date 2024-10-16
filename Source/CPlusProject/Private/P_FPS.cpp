@@ -2,7 +2,9 @@
  
 #include "HealthComponent.h"
 #include "Weapon_Base.h"
+#include "Widget_HUD.h"
 #include "Camera/CameraComponent.h"
+
 
 AP_FPS::AP_FPS()
 {
@@ -98,5 +100,5 @@ void AP_FPS::Handle_HealthDead(AController* causer)
 
 void AP_FPS::Handle_Damaged(float current, float max, float change)
 {
-	
+	OnPawnDamaged.Broadcast(current);
 }

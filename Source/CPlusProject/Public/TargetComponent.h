@@ -5,11 +5,10 @@
 #include "TargetComponent.generated.h"
 
 class UHealthComponent;
-class  UTargetComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FTargetDestroyedSignature, UTargetComponent*, target,
 	AController*, destroyer, int, targetValue);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetRegisteredSignature, UTargetComponent*, target);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetRegisteredSignature, class UTargetComponent*, target);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CPLUSPROJECT_API UTargetComponent : public UActorComponent

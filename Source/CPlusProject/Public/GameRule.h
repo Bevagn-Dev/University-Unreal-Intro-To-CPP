@@ -15,7 +15,6 @@ class CPLUSPROJECT_API UGameRule : public UActorComponent
 
 
 public:
-
 	UGameRule();
 
 	FGameRuleCompleteSignature OnComplete;

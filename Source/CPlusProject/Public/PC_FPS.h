@@ -5,6 +5,8 @@
 
 #include "PC_FPS.generated.h"
 
+class AP_FPS;
+class UWidget_HUD;
 struct FInputActionValue;
 class UInputAction;
 
@@ -26,6 +28,16 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _CrouchAction;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
+	TObjectPtr<UWidget_HUD> _HUDWidget;
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<AP_FPS> _PlayerRef;
+	
+	
+	virtual void BeginPlay() override;
+	
 	virtual void SetupInputComponent() override;
 
 	void Look(const FInputActionValue& value);

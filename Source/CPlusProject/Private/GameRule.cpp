@@ -1,10 +1,8 @@
 ﻿#include "GameRule.h"
 
-
-
 UGameRule::UGameRule()
 {
-
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UGameRule::Init()

@@ -1,11 +1,10 @@
 ﻿#include "TargetComponent.h"
 
 #include "HealthComponent.h"
-
+#include "GameRule_Target.h"
 
 UTargetComponent::UTargetComponent()
 {
-	
 	PrimaryComponentTick.bCanEverTick = false;
 	_PointsValue = 1;
 }
@@ -27,7 +26,7 @@ void UTargetComponent::BeginPlay()
 
 	_Health->OnDeath.AddUniqueDynamic(this, &UTargetComponent::Handle_HealthDead);
 
-	//Add Bind To Request
+	UGameRule_Target::OnRequestTargets.AddUniqueDynamic(this, &UTargetComponent::Handle_GameRuleRequestedTargets);
 
 	OnTargetRegister.Broadcast(this);
 }

@@ -3,8 +3,23 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Inputable.h"
+#include "P_FPS.h"
+#include "Widget_HUD.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+
+void APC_FPS::BeginPlay()
+{
+   Super::BeginPlay();
+
+   if (_HUDWidgetClass)
+   {
+      _HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>(this, _HUDWidgetClass);
+      _HUDWidget->AddToViewport();
+   }
+
+
+}
 
 void APC_FPS::SetupInputComponent()
 {
