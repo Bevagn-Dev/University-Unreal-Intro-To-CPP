@@ -4,6 +4,8 @@
 #include "UObject/Interface.h"
 #include "Inputable.generated.h"
 
+class UInputMappingContext;
+
 UINTERFACE()
 class UInputable : public UInterface
 {
@@ -34,4 +36,6 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UBehaviorTree* GetBehaviourTree();
 };

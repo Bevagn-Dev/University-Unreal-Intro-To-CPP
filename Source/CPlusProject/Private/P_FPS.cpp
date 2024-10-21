@@ -76,6 +76,11 @@ UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 	return _InputMapping;
 }
 
+UBehaviorTree* AP_FPS::GetBehaviourTree_Implementation()
+{
+	return _BehaviorTree;
+}
+
 void AP_FPS::BeginPlay()
 {
 	Super::BeginPlay();
