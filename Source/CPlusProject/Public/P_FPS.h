@@ -6,9 +6,6 @@
 
 #include "P_FPS.generated.h"
 
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthUpdatedSignature, float, currentHealth);
-
 class AWeapon_Base;
 class UInputMappingContext;
 class UHealthComponent;
@@ -16,7 +13,10 @@ class UCharacterMovementComponent;
 class UCameraComponent;
 class UCapsuleComponent;
 class UBehaviorTree;
- 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FPawnDamagedSignature, float, newHealth,
+	float, maxHealth, float, changeInHealth);
+
 UCLASS(Abstract)
 class CPLUSPROJECT_API AP_FPS : public ACharacter, public IInputable
 {
@@ -39,7 +39,7 @@ public:
 	virtual UBehaviorTree* GetBehaviourTree_Implementation() override;
 
 	UPROPERTY(BlueprintAssignable)
-	FHealthUpdatedSignature OnPawnDamaged;
+	FPawnDamagedSignature OnPawnDamaged;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

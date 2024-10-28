@@ -1,6 +1,8 @@
 ﻿#include "GM_FPS.h"
 
+#include "Controllable.h"
 #include "GameRule.h"
+#include "PC_FPS.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
  
@@ -106,7 +108,13 @@ void AGM_FPS::Handle_GameRuleCompleted()
 
 void AGM_FPS::Handle_GameRule_PointsScored(AController* scorer, int points)
 {
-	
+	for(AController* controller : _PlayerControllers)
+	{
+		if(UKismetSystemLibrary::DoesImplementInterface(scorer, UControllable::StaticClass()))
+		{
+			IControllable::Execute_AddPoints(scorer, points);
+		}
+	}
 }
 
 

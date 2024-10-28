@@ -2,7 +2,9 @@
  
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "P_FPS.h"
 #include "GM_FPS.generated.h"
+
 
 class UGameRule;
 
@@ -22,6 +24,9 @@ protected:
  
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<TObjectPtr<AController>> _PlayerControllers;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<TObjectPtr<AP_FPS>> _PlayerRef;
  
 	virtual void HandleMatchIsWaitingToStart() override;
 	virtual void HandleMatchHasStarted() override;

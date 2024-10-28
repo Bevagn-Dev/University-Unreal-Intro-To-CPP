@@ -3,7 +3,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Inputable.h"
-#include "P_FPS.h"
+#include "Controllable.h"
 #include "Widget_HUD.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -18,7 +18,7 @@ void APC_FPS::BeginPlay()
       _HUDWidget->AddToViewport();
    }
 
-
+   
 }
 
 void APC_FPS::SetupInputComponent()
@@ -129,6 +129,7 @@ void APC_FPS::CrouchReleased()
       }
    }
 }
+
 void APC_FPS::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);
@@ -140,4 +141,10 @@ void APC_FPS::OnPossess(APawn* InPawn)
           subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
        }
     }
+}
+
+void APC_FPS::AddPoints_Implementation(int points)
+{
+   _HUDWidget->UpdateScore(points);
+   UE_LOG(LogTemp, Display, TEXT("Points: %d"), points);
 }

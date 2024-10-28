@@ -1,9 +1,11 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "Controllable.h"
 #include "GameFramework/Playercontroller.h"
 
 #include "PC_FPS.generated.h"
+
 
 class AP_FPS;
 class UWidget_HUD;
@@ -12,7 +14,7 @@ class UInputAction;
 
 
 UCLASS(abstract)
-class CPLUSPROJECT_API APC_FPS : public APlayerController
+class CPLUSPROJECT_API APC_FPS : public APlayerController , public  IControllable
 {
 	GENERATED_BODY()
 	
@@ -31,10 +33,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
 	TObjectPtr<UWidget_HUD> _HUDWidget;
-
-	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<AP_FPS> _PlayerRef;
-	
 	
 	virtual void BeginPlay() override;
 	
@@ -50,6 +48,7 @@ protected:
 	void CrouchReleased();
 
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual  void AddPoints_Implementation(int points) override;
 };
 
 

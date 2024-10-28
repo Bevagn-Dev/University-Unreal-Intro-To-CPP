@@ -33,6 +33,7 @@ void UTargetComponent::BeginPlay()
 
 void UTargetComponent::Handle_HealthDead(AController* causer)
 {
+	UE_LOG(LogTemp, Display, TEXT("DEAD!!!!!!!!!!!"));
 	OnDestroyed.Broadcast(this, causer, _PointsValue);
 	GetOwner()->Destroy();
 }
