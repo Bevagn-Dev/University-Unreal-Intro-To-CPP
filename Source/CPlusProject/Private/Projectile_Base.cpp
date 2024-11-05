@@ -33,9 +33,33 @@ void AProjectile_Base::Handle_Hit(UPrimitiveComponent* HitComponent, AActor* Oth
 
 			Destroy();
 		}
-
-		
 	}
+}
+
+void AProjectile_Base::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetWorld()->GetTimerManager().SetTimer(_LifeSpanHandle, this, &AProjectile_Base::OnTimer, 1.0f, true);
+}
+
+void AProjectile_Base::OnTimer()
+{
+	++_TimerCounter;
+	
+	if (_TimerCounter >= _LifeSpan)
+	{
+		Destroy();
+		
+		GetWorld()->GetTimerManager().ClearTimer(_LifeSpanHandle);
+	}
+}
+
+void AProjectile_Base::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	GetWorld()->GetTimerManager().ClearTimer(_LifeSpanHandle);
 }
 
 

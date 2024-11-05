@@ -2,6 +2,8 @@
 
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
 
 AFirstActor::AFirstActor()
@@ -28,6 +30,13 @@ void AFirstActor::Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* 
 void AFirstActor::BeginPlay()
 {
 	_Collider->OnComponentHit.AddUniqueDynamic(this, &AFirstActor::Handle_ColliderHit);
+}
+
+void AFirstActor::Interact_Implementation()
+{
+	IInteractable::Interact_Implementation();
+	
+	UE_LOG(LogTemp, Display, TEXT("Hit"));
 }
 
 

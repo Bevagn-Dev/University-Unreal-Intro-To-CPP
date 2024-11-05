@@ -30,6 +30,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_FireReleased();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_InteractPressed();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_InteractReleased();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_CrouchPressed();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_CrouchReleased();

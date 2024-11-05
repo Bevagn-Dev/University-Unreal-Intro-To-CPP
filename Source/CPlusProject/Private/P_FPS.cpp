@@ -1,9 +1,12 @@
 ﻿#include "P_FPS.h"
  
 #include "HealthComponent.h"
+#include "Interactable.h"
 #include "Weapon_Base.h"
 #include "Widget_HUD.h"
 #include "Camera/CameraComponent.h"
+#include "Engine/HitResult.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 AP_FPS::AP_FPS()
@@ -34,7 +37,39 @@ void AP_FPS::Input_FireReleased_Implementation()
 		_WeaponRef->StopFire();
 	}
 }
- 
+
+void AP_FPS::Input_InteractPressed_Implementation()
+{
+	UWorld* const world = GetWorld();
+	if (world == nullptr) { return; }
+
+	FHitResult hit(ForceInit);
+	FVector start = _Camera->GetComponentLocation();
+	FVector end = start + (_Camera->GetForwardVector() * 500);
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(this);
+	
+	if (UKismetSystemLibrary::SphereTraceSingle(
+		world, start, end, 20,UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2),
+		false, ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true,
+		FLinearColor::Red, FLinearColor::Green, 5))
+	{
+		AActor* hitActor = hit.GetActor();
+		if (hitActor)
+		{
+			if (UKismetSystemLibrary::DoesImplementInterface(hitActor, UInteractable::StaticClass()))
+			{
+				IInteractable::Execute_Interact(hitActor);
+			}
+		}
+	}
+}
+
+void AP_FPS::Input_InteractReleased_Implementation()
+{
+	
+}
+
 void AP_FPS::Input_JumpPressed_Implementation()
 {
 	ACharacter::Jump();

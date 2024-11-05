@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "Interactable.h"
 #include "GameFramework/Actor.h"
 
 #include "FirstActor.generated.h"
@@ -9,7 +10,7 @@ class UBoxComponent;
 class UArrowComponent;
 
 UCLASS(Abstract)
-class CPLUSPROJECT_API AFirstActor : public AActor
+class CPLUSPROJECT_API AFirstActor : public AActor , public IInteractable
 {
 	GENERATED_BODY()
 
@@ -29,4 +30,6 @@ protected:
 		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	virtual void BeginPlay() override;
+
+	virtual void Interact_Implementation() override;
 };

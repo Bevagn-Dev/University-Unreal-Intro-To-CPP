@@ -28,6 +28,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _FireAction;
 	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _InteractAction;
+	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _CrouchAction;
 
 	UPROPERTY(EditAnywhere)
@@ -44,6 +46,8 @@ protected:
 	void JumpReleased();
 	void FirePressed();
 	void FireReleased();
+	void InteractPressed();
+	void InteractReleased();
 	void CrouchPressed();
 	void CrouchReleased();
 

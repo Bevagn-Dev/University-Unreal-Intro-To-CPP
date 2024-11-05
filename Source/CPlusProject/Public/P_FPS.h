@@ -27,6 +27,8 @@ public:
  
 	virtual void Input_FirePressed_Implementation() override;
 	virtual void Input_FireReleased_Implementation() override;
+	virtual void Input_InteractPressed_Implementation() override;
+	virtual void Input_InteractReleased_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_CrouchPressed_Implementation() override;
@@ -41,6 +43,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FPawnDamagedSignature OnPawnDamaged;
 
+	
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> _Camera;
