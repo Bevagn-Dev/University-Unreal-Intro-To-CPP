@@ -119,9 +119,10 @@ UBehaviorTree* AP_FPS::GetBehaviourTree_Implementation()
 void AP_FPS::BeginPlay()
 {
 	Super::BeginPlay();
-
-	_Health->OnDeath.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
+	
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_Damaged);
+	_Health->OnDeath.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
+
 
 	if(_DefaultWeapon)
 	{
@@ -135,7 +136,7 @@ void AP_FPS::BeginPlay()
 
 void AP_FPS::Handle_HealthDead(AController* causer)
 {
-	
+	UE_LOG(LogTemp, Display, TEXT("You DIED........."));
 }
 
 void AP_FPS::Handle_Damaged(float current, float max, float change)

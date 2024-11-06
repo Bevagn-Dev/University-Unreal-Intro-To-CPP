@@ -1,5 +1,6 @@
 ﻿#include "FirstActor.h"
 
+#include "HealthComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -13,7 +14,7 @@ AFirstActor::AFirstActor()
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	_Mesh->SetupAttachment(_Collider);
-
+	
 	_Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	_Arrow->SetupAttachment(_Collider);
 	
@@ -36,8 +37,5 @@ void AFirstActor::Interact_Implementation()
 {
 	IInteractable::Interact_Implementation();
 	
-	UE_LOG(LogTemp, Display, TEXT("Hit"));
+
 }
-
-
-

@@ -173,3 +173,5 @@ void APC_FPS::AddPoints_Implementation(int points)
    _HUDWidget->UpdateScore(points);
    UE_LOG(LogTemp, Display, TEXT("Points: %d"), points);
 }
+
+
