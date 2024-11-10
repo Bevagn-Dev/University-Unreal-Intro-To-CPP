@@ -18,7 +18,6 @@ void APC_FPS::BeginPlay()
       _HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>(this, _HUDWidgetClass);
       _HUDWidget->AddToViewport();
    }
-
    
 }
 
@@ -166,12 +165,20 @@ void APC_FPS::OnPossess(APawn* InPawn)
           subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
        }
     }
+   
+   
+   
 }
 
 void APC_FPS::AddPoints_Implementation(int points)
 {
    _HUDWidget->UpdateScore(points);
    UE_LOG(LogTemp, Display, TEXT("Points: %d"), points);
+}
+
+void APC_FPS::UpdateHealthUI(float NewHealth, float MaxHealth, float ChangeInHealth)
+{
+   _HUDWidget->UpdateHealth(NewHealth);
 }
 
 

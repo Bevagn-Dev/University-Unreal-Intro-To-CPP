@@ -2,6 +2,7 @@
  
 #include "CoreMinimal.h"
 #include "Inputable.h"
+#include "Pawnable.h"
 #include "GameFramework/Character.h"
 
 #include "P_FPS.generated.h"
@@ -14,11 +15,9 @@ class UCameraComponent;
 class UCapsuleComponent;
 class UBehaviorTree;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FPawnDamagedSignature, float, newHealth,
-	float, maxHealth, float, changeInHealth);
 
 UCLASS(Abstract)
-class CPLUSPROJECT_API AP_FPS : public ACharacter, public IInputable
+class CPLUSPROJECT_API AP_FPS : public ACharacter, public IInputable , public IPawnable
 {
 	GENERATED_BODY()
  

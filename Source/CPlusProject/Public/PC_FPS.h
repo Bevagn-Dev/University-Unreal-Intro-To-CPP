@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Controllable.h"
+#include "Pawnable.h"
 #include "GameFramework/Playercontroller.h"
 
 #include "PC_FPS.generated.h"
@@ -14,7 +15,7 @@ class UInputAction;
 
 
 UCLASS(abstract)
-class CPLUSPROJECT_API APC_FPS : public APlayerController , public  IControllable
+class CPLUSPROJECT_API APC_FPS : public APlayerController , public  IControllable , public IPawnable
 {
 	GENERATED_BODY()
 	
@@ -53,6 +54,8 @@ protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual  void AddPoints_Implementation(int points) override;
+
+	void UpdateHealthUI(float NewHealth, float MaxHealth, float ChangeInHealth);
 };
 
 
