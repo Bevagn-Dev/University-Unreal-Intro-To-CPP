@@ -9,14 +9,13 @@ AAttackDummy::AAttackDummy()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	_Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
-	RootComponent = _Collider;
+	_SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+	RootComponent = _SkeletalMesh;
 
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 	_Target = CreateDefaultSubobject<UTargetComponent>(TEXT("Target"));
 	
-	_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	_Mesh->SetupAttachment(RootComponent);
+
 }
 
 void AAttackDummy::BeginPlay()
@@ -30,11 +29,13 @@ void AAttackDummy::BeginPlay()
 void AAttackDummy::Handle_HealthDead(AController* causer)
 {
 	UE_LOG(LogTemp, Display, TEXT("You DIED........."));
+	
 }
 
 void AAttackDummy::Handle_Damaged(float current, float max, float change)
 {
 	UE_LOG(LogTemp, Display, TEXT("Damaged........."));
+	
 }
 
 

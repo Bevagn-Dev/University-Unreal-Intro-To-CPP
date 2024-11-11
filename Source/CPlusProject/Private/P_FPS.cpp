@@ -3,7 +3,6 @@
 #include "HealthComponent.h"
 #include "Interactable.h"
 #include "Weapon_Base.h"
-#include "Widget_HUD.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/HitResult.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -18,7 +17,7 @@ AP_FPS::AP_FPS()
  
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 
-	_WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Attach"));
+	_WeaponAttachPoint = CreateDefaultSubobject<USpringArmComponent>(TEXT("Weapon Attach"));
 	_WeaponAttachPoint->SetupAttachment(_Camera);
 }
  
@@ -141,5 +140,6 @@ void AP_FPS::Handle_HealthDead(AController* causer)
 
 void AP_FPS::Handle_Damaged(float current, float max, float change)
 {
+	UE_LOG(LogTemp, Display, TEXT("Damaged Pawn"));
 	OnPawnDamaged.Broadcast(current, max, change);
 }

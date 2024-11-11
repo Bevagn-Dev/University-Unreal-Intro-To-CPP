@@ -4,6 +4,7 @@
 #include "Inputable.h"
 #include "Pawnable.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 
 #include "P_FPS.generated.h"
 
@@ -39,8 +40,10 @@ public:
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 	virtual UBehaviorTree* GetBehaviourTree_Implementation() override;
 
-	UPROPERTY(BlueprintAssignable)
-	FPawnDamagedSignature OnPawnDamaged;
+	//UPROPERTY(BlueprintAssignable)
+	//FPawnDamagedSignature OnPawnDamaged;
+
+	
 
 	
 	
@@ -51,7 +54,7 @@ protected:
 	TObjectPtr<UHealthComponent> _Health;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<USceneComponent> _WeaponAttachPoint;
+	TObjectPtr<USpringArmComponent> _WeaponAttachPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

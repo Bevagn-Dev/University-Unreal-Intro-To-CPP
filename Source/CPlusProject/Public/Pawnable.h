@@ -4,6 +4,9 @@
 
 #include "Pawnable.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FPawnDamagedSignature, float, newHealth,
+	float, maxHealth, float, changeInHealth);
+
 UINTERFACE()
 class UPawnable : public UInterface
 {
@@ -15,6 +18,5 @@ class CPLUSPROJECT_API IPawnable
 	GENERATED_BODY()
 
 public:
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FPawnDamagedSignature, float, newHealth,
-		float, maxHealth, float, changeInHealth);
+	FPawnDamagedSignature OnPawnDamaged;
 };
