@@ -18,6 +18,9 @@ void APC_FPS::BeginPlay()
    {
       _HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>(this, _HUDWidgetClass);
       _HUDWidget->AddToViewport();
+
+      _HUDWidget->UpdateHealth(1.0f);
+      _HUDWidget->UpdateScore(0);
    }
       
    
@@ -171,20 +174,17 @@ void APC_FPS::OnPossess(APawn* InPawn)
    if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UPawnable::StaticClass()))
    {
       Cast<IPawnable>(InPawn)->OnPawnDamaged.AddUniqueDynamic(this, &APC_FPS::UpdateHealthUI);
-      UE_LOG(LogTemp, Display, TEXT("IPawnable"));
    }
 }
 
 void APC_FPS::AddPoints_Implementation(int points)
 {
    _HUDWidget->UpdateScore(points);
-   UE_LOG(LogTemp, Display, TEXT("Points: %d"), points);
 }
 
 void APC_FPS::UpdateHealthUI(float NewHealth, float MaxHealth, float ChangeInHealth)
 {
    _HUDWidget->UpdateHealth(NewHealth / 100);
-   UE_LOG(LogTemp, Display, TEXT("Health: %f"), NewHealth);
 }
 
 

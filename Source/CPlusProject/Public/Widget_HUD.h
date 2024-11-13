@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Border.h"
 #include "Widget_HUD.generated.h"
 
 class UTextBlock;
@@ -16,10 +17,17 @@ public:
 	virtual void NativeConstruct() override;
 	void UpdateHealth(float newHealthRatio);
 	void UpdateScore(int newScore);
+	void SetRadialPercent(float progress);
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UProgressBar> HealthBar;
+	TObjectPtr<UBorder> HealthBar;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ScoreText;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInstanceDynamic> RadialBarMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UMaterialInterface* RadialBarMaterialInterface;
 };
