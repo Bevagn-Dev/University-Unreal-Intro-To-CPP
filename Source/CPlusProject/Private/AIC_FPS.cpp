@@ -6,7 +6,6 @@
 
 AAIC_FPS::AAIC_FPS()
 {
-
 	PrimaryActorTick.bCanEverTick = true;
 }
 

@@ -19,7 +19,7 @@ void AWeapon_Hitscan::Fire()
 		false, ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true,
 		FLinearColor::Red,FLinearColor::Green, 5))
 	{
-		UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage, GetOwner()->GetInstigatorController(),
+		UGameplayStatics::ApplyDamage(hit.GetActor(), 100, GetOwner()->GetInstigatorController(),
 			GetOwner(), UDamageType::StaticClass());
 
 		UE_LOG(LogTemp, Display, TEXT("Hit Positiion: %s"), *hit.ImpactPoint.ToString());

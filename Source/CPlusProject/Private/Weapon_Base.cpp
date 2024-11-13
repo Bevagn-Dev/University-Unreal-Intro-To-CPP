@@ -33,6 +33,12 @@ void AWeapon_Base::StopFire()
 	GetWorld()->GetTimerManager().ClearTimer(_FireDelayTimer);
 }
 
+/*void AWeapon_Base::Init(UWeaponType* type)
+{
+	_TypeData = type;
+	_Mesh->SetSkeletalMesh(_TypeData->_WeaponMesh);
+}*/
+
 void AWeapon_Base::Fire()
 {
 	OnFire.Broadcast();

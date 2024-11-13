@@ -40,12 +40,6 @@ public:
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 	virtual UBehaviorTree* GetBehaviourTree_Implementation() override;
 
-	//UPROPERTY(BlueprintAssignable)
-	//FPawnDamagedSignature OnPawnDamaged;
-
-	
-
-	
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
