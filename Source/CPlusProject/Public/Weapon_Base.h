@@ -23,7 +23,7 @@ public:
 	void StartFire();
 	void StopFire();
 
-	//void Init(UWeaponType* type);
+	void Init(UWeaponType* type);
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
@@ -35,8 +35,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UArrowComponent> _Muzzle;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//TObjectPtr<UWeaponType> _TypeData;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UWeaponType> _TypeData;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _FireDelay;

@@ -17,8 +17,8 @@ public:
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> _Collider;
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<USkeletalMeshComponent> _SkeletalMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> _Mesh;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UHealthComponent> _Health;

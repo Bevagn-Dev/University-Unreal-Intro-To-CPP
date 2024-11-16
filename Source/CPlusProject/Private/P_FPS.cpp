@@ -130,6 +130,7 @@ void AP_FPS::BeginPlay()
 		spawnParams.Instigator = this;
 		TObjectPtr<AWeapon_Base> spawnedGun = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
 		spawnedGun->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		//spawnedGun->Init(_DefaultWeaponType);
 	}
 }
 

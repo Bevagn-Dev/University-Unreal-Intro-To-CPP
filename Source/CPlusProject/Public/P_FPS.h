@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Inputable.h"
 #include "Pawnable.h"
+#include "WeaponType.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 

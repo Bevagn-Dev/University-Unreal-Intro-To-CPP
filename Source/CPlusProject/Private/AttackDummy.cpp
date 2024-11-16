@@ -9,8 +9,8 @@ AAttackDummy::AAttackDummy()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	_SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
-	RootComponent = _SkeletalMesh;
+	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	RootComponent = _Mesh;
 
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 	_Target = CreateDefaultSubobject<UTargetComponent>(TEXT("Target"));
