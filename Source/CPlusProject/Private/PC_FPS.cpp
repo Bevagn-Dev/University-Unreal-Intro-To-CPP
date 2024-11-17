@@ -20,6 +20,7 @@ void APC_FPS::BeginPlay()
       _HUDWidget->AddToViewport();
 
       _HUDWidget->UpdateHealth(1.0f);
+      _HUDWidget->UpdateStamina(1.0f);
       _HUDWidget->UpdateScore(0);
    }
       
@@ -42,6 +43,8 @@ void APC_FPS::SetupInputComponent()
        EIP->BindAction(_InteractAction, ETriggerEvent::Completed, this, &APC_FPS::InteractReleased);
        EIP->BindAction(_CrouchAction, ETriggerEvent::Triggered, this, &APC_FPS::CrouchPressed);
        EIP->BindAction(_CrouchAction, ETriggerEvent::Completed, this, &APC_FPS::CrouchReleased);
+       EIP->BindAction(_SprintAction, ETriggerEvent::Triggered, this, &APC_FPS::SprintPressed);
+       EIP->BindAction(_SprintAction, ETriggerEvent::Completed, this, &APC_FPS::SprintReleased);
     }
 }
  
@@ -159,6 +162,28 @@ void APC_FPS::CrouchReleased()
    }
 }
 
+void APC_FPS::SprintPressed()
+{
+   if(APawn* currentPawn = GetPawn())
+   {
+      if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+      {
+         IInputable::Execute_Input_SprintPressed(currentPawn);
+      }
+   } 
+}
+
+void APC_FPS::SprintReleased()
+{
+   if(APawn* currentPawn = GetPawn())
+   {
+      if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+      {
+         IInputable::Execute_Input_SprintReleased(currentPawn);
+      }
+   }
+}
+
 void APC_FPS::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);
@@ -175,6 +200,11 @@ void APC_FPS::OnPossess(APawn* InPawn)
    {
       Cast<IPawnable>(InPawn)->OnPawnDamaged.AddUniqueDynamic(this, &APC_FPS::UpdateHealthUI);
    }
+
+   if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UPawnable::StaticClass()))
+   {
+      Cast<IPawnable>(InPawn)->OnPawnStamina.AddUniqueDynamic(this, &APC_FPS::UpdateStaminaUI);
+   }
 }
 
 void APC_FPS::AddPoints_Implementation(int points)
@@ -182,9 +212,14 @@ void APC_FPS::AddPoints_Implementation(int points)
    _HUDWidget->UpdateScore(points);
 }
 
-void APC_FPS::UpdateHealthUI(float NewHealth, float MaxHealth, float ChangeInHealth)
+void APC_FPS::UpdateHealthUI(float CurrentHealth)
 {
-   _HUDWidget->UpdateHealth(NewHealth / 100);
+   _HUDWidget->UpdateHealth(CurrentHealth / 100);
+}
+
+void APC_FPS::UpdateStaminaUI(float currentStamina)
+{
+   _HUDWidget->UpdateStamina(currentStamina / 100);
 }
 
 

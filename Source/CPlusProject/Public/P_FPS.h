@@ -34,6 +34,8 @@ public:
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_CrouchPressed_Implementation() override;
 	virtual void Input_CrouchReleased_Implementation() override;
+	virtual void Input_SprintPressed_Implementation() override;
+	virtual void Input_SprintReleased_Implementation() override;
 
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
@@ -59,12 +61,47 @@ protected:
 	TObjectPtr<UInputMappingContext> _InputMapping;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBehaviorTree> _BehaviorTree;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float WalkSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float SprintSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stamina Settings")
+	float MaxStamina;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stamina Settings")
+	float StaminaDrainAmount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stamina Settings")
+	float StaminaDrainTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stamina Settings")
+	float StaminaRegenAmount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stamina Settings")
+	float StaminaRegenTime;
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool isSprinting;
+	UPROPERTY(BlueprintReadOnly)
+	float CurrentStamina;
 	
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void StartSprinting();
+	UFUNCTION()
+	void StopSprinting();
+	UFUNCTION()
+	void DrainStamina();
+	UFUNCTION()
+	void RegenStamina();
 	
 private:
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
 	UFUNCTION()
 	void Handle_Damaged(float current, float max, float change);
+	
+	FTimerHandle _DrainTimeHandle;
+	FTimerHandle _RegenTimeHandle;
+	int32 _TimerCounter = 0;
+	
 };

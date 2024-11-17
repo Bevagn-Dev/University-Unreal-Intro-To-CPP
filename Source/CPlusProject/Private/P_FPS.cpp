@@ -5,6 +5,7 @@
 #include "Weapon_Base.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/HitResult.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -89,6 +90,22 @@ void AP_FPS::Input_CrouchReleased_Implementation()
 	ACharacter::UnCrouch();
 }
 
+void AP_FPS::Input_SprintPressed_Implementation()
+{	
+	if(!ACharacter::bIsCrouched && GetVelocity().Length() != 0)
+	{
+		StartSprinting();
+		DrainStamina();
+	}
+	
+}
+
+void AP_FPS::Input_SprintReleased_Implementation()
+{
+	StopSprinting();
+	RegenStamina();
+}
+
 void AP_FPS::Input_Look_Implementation(FVector2D value)
 {
 	FRotator currentRotation = _Camera->GetRelativeRotation();
@@ -142,5 +159,44 @@ void AP_FPS::Handle_HealthDead(AController* causer)
 void AP_FPS::Handle_Damaged(float current, float max, float change)
 {
 	UE_LOG(LogTemp, Display, TEXT("Damaged Pawn"));
-	OnPawnDamaged.Broadcast(current, max, change);
+	OnPawnDamaged.Broadcast(current);
+}
+
+
+void AP_FPS::StartSprinting()
+{
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	isSprinting = true;
+}
+
+void AP_FPS::StopSprinting()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	isSprinting = false;
+}
+
+void AP_FPS::DrainStamina()
+{
+	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f , MaxStamina);
+	CurrentStamina -= StaminaDrainAmount;
+	OnPawnStamina.Broadcast(CurrentStamina);
+	
+	if(CurrentStamina == 0)
+	{
+		StopSprinting();
+		UE_LOG(LogTemp, Display, TEXT("Out of stamina"));
+	}
+}
+
+void AP_FPS::RegenStamina()
+{
+	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f , MaxStamina);
+	CurrentStamina += StaminaDrainAmount;
+	OnPawnStamina.Broadcast(CurrentStamina);
+	
+	if(CurrentStamina != MaxStamina && !isSprinting)
+	{
+		//Delay with Regen Time
+		RegenStamina();
+	}
 }

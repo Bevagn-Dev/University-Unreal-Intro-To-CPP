@@ -31,6 +31,8 @@ protected:
 	TObjectPtr<UInputAction> _InteractAction;
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _CrouchAction;
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _SprintAction;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
@@ -50,12 +52,16 @@ protected:
 	void InteractReleased();
 	void CrouchPressed();
 	void CrouchReleased();
+	void SprintPressed();
+	void SprintReleased();
 
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual  void AddPoints_Implementation(int points) override;
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateHealthUI(float NewHealth, float MaxHealth, float ChangeInHealth);
+	void UpdateHealthUI(float currentHealth);
+	UFUNCTION(BlueprintCallable)
+	void UpdateStaminaUI(float currentStamina);
 };
 
 

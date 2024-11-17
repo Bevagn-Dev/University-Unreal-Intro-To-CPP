@@ -31,9 +31,7 @@ protected:
 	FTimerHandle _LifeSpanHandle;
 	int32 _TimerCounter = 0;
 
-	
 
-	
 private:
 	UFUNCTION()
 	void Handle_Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

@@ -16,18 +16,26 @@ class CPLUSPROJECT_API UWidget_HUD : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 	void UpdateHealth(float newHealthRatio);
+	void UpdateStamina(float newStaminaRatio);
 	void UpdateScore(int newScore);
-	void SetRadialPercent(float progress);
+	void SetHealthPercent(float progress);
+	void SetStaminaPercent(float progress);
 
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UBorder> HealthBar;
 	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UBorder> StaminaBar;
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ScoreText;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TObjectPtr<UMaterialInstanceDynamic> RadialBarMaterial;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UMaterialInstanceDynamic> RadialHealthBarMaterial;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UMaterialInstanceDynamic> RadialStaminaBarMaterial;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UMaterialInterface* RadialBarMaterialInterface;
+	UMaterialInterface* RadialHealthBarMaterialInterface;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UMaterialInterface* RadialStaminaBarMaterialInterface;
 };
