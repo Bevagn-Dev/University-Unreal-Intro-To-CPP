@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Controllable.h"
+#include "GenericTeamAgentInterface.h"
 #include "GameFramework/Playercontroller.h"
 
 #include "PC_FPS.generated.h"
@@ -14,7 +15,7 @@ class UInputAction;
 
 
 UCLASS(abstract)
-class CPLUSPROJECT_API APC_FPS : public APlayerController , public  IControllable
+class CPLUSPROJECT_API APC_FPS : public APlayerController , public  IControllable , public  IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 	
@@ -62,6 +63,9 @@ protected:
 	void UpdateHealthUI(float currentHealth);
 	UFUNCTION(BlueprintCallable)
 	void UpdateStaminaUI(float currentStamina);
+
+public:
+	virtual FGenericTeamId GetGenericTeamId() const override;
 };
 
 

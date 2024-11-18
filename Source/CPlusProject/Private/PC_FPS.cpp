@@ -222,4 +222,10 @@ void APC_FPS::UpdateStaminaUI(float currentStamina)
    _HUDWidget->UpdateStamina(currentStamina / 100);
 }
 
+FGenericTeamId APC_FPS::GetGenericTeamId() const
+{
+   FGenericTeamId _teamID = FGenericTeamId(2);
+   return _teamID;
+}
+
 

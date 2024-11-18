@@ -103,6 +103,9 @@ void AP_FPS::Input_SprintPressed_Implementation()
 void AP_FPS::Input_SprintReleased_Implementation()
 {
 	StopSprinting();
+
+
+	
 	RegenStamina();
 }
 
@@ -177,26 +180,29 @@ void AP_FPS::StopSprinting()
 
 void AP_FPS::DrainStamina()
 {
-	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f , MaxStamina);
-	CurrentStamina -= StaminaDrainAmount;
-	OnPawnStamina.Broadcast(CurrentStamina);
-	
-	if(CurrentStamina == 0)
+	if(CurrentStamina <= 0)
 	{
 		StopSprinting();
 		UE_LOG(LogTemp, Display, TEXT("Out of stamina"));
+		return;
 	}
+	
+	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f , MaxStamina);
+	CurrentStamina -= StaminaDrainAmount;
+	OnPawnStamina.Broadcast(CurrentStamina);
 }
 
 void AP_FPS::RegenStamina()
 {
 	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f , MaxStamina);
-	CurrentStamina += StaminaDrainAmount;
+	CurrentStamina += StaminaRegenAmount;
 	OnPawnStamina.Broadcast(CurrentStamina);
 	
-	if(CurrentStamina != MaxStamina && !isSprinting)
+	if(CurrentStamina < MaxStamina && !isSprinting)
 	{
 		//Delay with Regen Time
 		RegenStamina();
 	}
+
+		
 }
