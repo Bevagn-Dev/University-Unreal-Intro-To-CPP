@@ -91,22 +91,18 @@ void AP_FPS::Input_CrouchReleased_Implementation()
 }
 
 void AP_FPS::Input_SprintPressed_Implementation()
-{	
-	if(!ACharacter::bIsCrouched && GetVelocity().Length() != 0)
+{   
+	if (!ACharacter::bIsCrouched && GetVelocity().Length() != 0)
 	{
 		StartSprinting();
-		DrainStamina();
+		StartStaminaDrain();
 	}
-	
 }
 
 void AP_FPS::Input_SprintReleased_Implementation()
 {
 	StopSprinting();
-
-
-	
-	RegenStamina();
+	StartStaminaRegen();
 }
 
 void AP_FPS::Input_Look_Implementation(FVector2D value)
@@ -142,15 +138,15 @@ void AP_FPS::BeginPlay()
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_Damaged);
 	_Health->OnDeath.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
 
+	CurrentStamina = MaxStamina;
 
 	if(_DefaultWeapon)
 	{
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 		spawnParams.Instigator = this;
-		TObjectPtr<AWeapon_Base> spawnedGun = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
-		spawnedGun->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		//spawnedGun->Init(_DefaultWeaponType);
+		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
+		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	}
 }
 
@@ -170,6 +166,7 @@ void AP_FPS::StartSprinting()
 {
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 	isSprinting = true;
+	GetWorldTimerManager().ClearTimer(_RegenTimeHandle);
 }
 
 void AP_FPS::StopSprinting()
@@ -178,31 +175,46 @@ void AP_FPS::StopSprinting()
 	isSprinting = false;
 }
 
+void AP_FPS::StartStaminaDrain()
+{
+	if (GetWorldTimerManager().IsTimerActive(_DrainTimeHandle)) return;
+	GetWorldTimerManager().SetTimer(_DrainTimeHandle, this, &AP_FPS::DrainStamina, StaminaDrainTime, true);
+}
+
+void AP_FPS::StartStaminaRegen()
+{
+	if (GetWorldTimerManager().IsTimerActive(_DrainTimeHandle))
+	{
+		GetWorldTimerManager().ClearTimer(_DrainTimeHandle); 
+	}
+	if (!GetWorldTimerManager().IsTimerActive(_RegenTimeHandle))
+	{
+		GetWorldTimerManager().SetTimer(_RegenTimeHandle, this, &AP_FPS::RegenStamina, StaminaRegenTime, true);
+	}
+}
+
+
 void AP_FPS::DrainStamina()
 {
-	if(CurrentStamina <= 0)
+	if (CurrentStamina <= 0)
 	{
 		StopSprinting();
-		UE_LOG(LogTemp, Display, TEXT("Out of stamina"));
+		GetWorldTimerManager().ClearTimer(_DrainTimeHandle);
 		return;
 	}
-	
-	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f , MaxStamina);
-	CurrentStamina -= StaminaDrainAmount;
+
+	CurrentStamina = FMath::Clamp(CurrentStamina - StaminaDrainAmount, 0.0f, MaxStamina);
 	OnPawnStamina.Broadcast(CurrentStamina);
 }
 
 void AP_FPS::RegenStamina()
 {
-	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f , MaxStamina);
-	CurrentStamina += StaminaRegenAmount;
-	OnPawnStamina.Broadcast(CurrentStamina);
-	
-	if(CurrentStamina < MaxStamina && !isSprinting)
+	if (isSprinting || CurrentStamina >= MaxStamina)
 	{
-		//Delay with Regen Time
-		RegenStamina();
+		GetWorldTimerManager().ClearTimer(_RegenTimeHandle);
+		return;
 	}
 
-		
+	CurrentStamina = FMath::Clamp(CurrentStamina + StaminaRegenAmount, 0.0f, MaxStamina);
+	OnPawnStamina.Broadcast(CurrentStamina);
 }

@@ -51,7 +51,7 @@ protected:
 	TObjectPtr<UHealthComponent> _Health;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<USpringArmComponent> _WeaponAttachPoint;
+	TObjectPtr<USceneComponent> _WeaponAttachPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -93,6 +93,10 @@ protected:
 	void DrainStamina();
 	UFUNCTION()
 	void RegenStamina();
+	UFUNCTION()
+	void StartStaminaDrain();
+	UFUNCTION()
+	void StartStaminaRegen();
 	
 private:
 	UFUNCTION()

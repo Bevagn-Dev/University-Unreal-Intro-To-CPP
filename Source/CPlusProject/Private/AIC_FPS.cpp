@@ -60,7 +60,8 @@ void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 	switch (Stimulus.Type)
 	{
 	case 0:
-		UE_LOG(LogTemp, Display, TEXT("Found Enemy"));
+		UE_LOG(LogTemp, Display, TEXT("Found Enemy %s"), *Actor->GetName());
+		UE_LOG(LogTemp, Display, TEXT("Found Enemy "));
 		return;
 	default:
 		return;
