@@ -41,6 +41,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _FireDelay;
 	FTimerHandle _FireDelayTimer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* _FireSound;
 	
 	UFUNCTION()
 	virtual void Fire();

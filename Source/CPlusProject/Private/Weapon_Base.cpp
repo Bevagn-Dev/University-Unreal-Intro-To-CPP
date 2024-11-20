@@ -1,6 +1,8 @@
 ﻿#include "Weapon_Base.h"
 
 #include "Components/ArrowComponent.h"
+#include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 
 AWeapon_Base::AWeapon_Base()
 {
@@ -22,8 +24,7 @@ void AWeapon_Base::StartFire()
 	Fire();
 	if(_FireDelay != 0.0f)
 	{
-		GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this,
-			&AWeapon_Base::Fire, _FireDelay, true);
+		GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this, &AWeapon_Base::Fire, _FireDelay, true);
 	}
 	
 }
@@ -42,6 +43,7 @@ void AWeapon_Base::Init(UWeaponType* type)
 void AWeapon_Base::Fire()
 {
 	OnFire.Broadcast();
+	UGameplayStatics::PlaySound2D(GetWorld(), _FireSound, 1.0f, 1.0f, 0, NULL, this, false);
 }
 
 

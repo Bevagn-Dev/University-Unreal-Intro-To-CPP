@@ -20,13 +20,14 @@ public:
 	FHealthDeadSignature OnDeath;
 	UPROPERTY(BlueprintAssignable)
 	FHealthDamagedSignature OnDamaged;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float _CurrentHealth;
+	
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _MaxHealth;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float _CurrentHealth;
+
 	
 	virtual void BeginPlay() override;
 

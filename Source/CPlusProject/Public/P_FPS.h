@@ -93,6 +93,9 @@ protected:
 	void DrainStamina();
 	UFUNCTION()
 	void RegenStamina();
+
+	void StartStaminaDrain();
+	void StartStaminaRegen();
 	
 private:
 	UFUNCTION()
