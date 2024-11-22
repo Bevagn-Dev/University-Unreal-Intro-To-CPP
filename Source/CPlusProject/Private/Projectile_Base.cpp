@@ -14,10 +14,12 @@ AProjectile_Base::AProjectile_Base()
 
 	_ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 	_ProjectileMovement->UpdatedComponent = _Collider;
-	_ProjectileMovement->InitialSpeed = 3000.f;
-	_ProjectileMovement->MaxSpeed = 3000.f;
+	_ProjectileMovement->InitialSpeed = _InitSpeed;
+	_ProjectileMovement->MaxSpeed = _MaxSpeed;
 	_ProjectileMovement->bRotationFollowsVelocity = true;
 	_ProjectileMovement->bShouldBounce = true;
+
+	_BounceCount = 0;
 }
 
 void AProjectile_Base::Handle_Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -33,6 +35,12 @@ void AProjectile_Base::Handle_Hit(UPrimitiveComponent* HitComponent, AActor* Oth
 
 			Destroy();
 		}
+	}
+	
+	_BounceCount++;
+	if (_BounceCount >= 2)
+	{
+		Destroy();
 	}
 }
 

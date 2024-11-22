@@ -2,10 +2,12 @@
  
 #include "HealthComponent.h"
 #include "Interactable.h"
+#include "StaminaComponent.h"
 #include "Weapon_Base.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/HitResult.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -17,6 +19,8 @@ AP_FPS::AP_FPS()
 	_Camera->SetupAttachment(RootComponent);
  
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	_Stamina = CreateDefaultSubobject<UStaminaComponent>(TEXT("Stamina"));
+
 
 	_WeaponAttachPoint = CreateDefaultSubobject<USpringArmComponent>(TEXT("Weapon Attach"));
 	_WeaponAttachPoint->SetupAttachment(_Camera);
@@ -91,18 +95,29 @@ void AP_FPS::Input_CrouchReleased_Implementation()
 }
 
 void AP_FPS::Input_SprintPressed_Implementation()
-{   
+{
 	if (!ACharacter::bIsCrouched && GetVelocity().Length() != 0)
 	{
-		StartSprinting();
-		StartStaminaDrain();
+		_Stamina->StartSprinting();
+		_Stamina->StartStaminaDrain();
 	}
 }
 
 void AP_FPS::Input_SprintReleased_Implementation()
 {
-	StopSprinting();
-	StartStaminaRegen();
+	_Stamina->StopSprinting();
+	_Stamina->StartStaminaRegen();
+}
+
+void AP_FPS::Input_Explode_Implementation()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), _ExplosionSystem, GetActorLocation(), FRotator::ZeroRotator, FVector(1.0f));
+	
+	UGameplayStatics::ApplyRadialDamageWithFalloff(GetWorld(), 100.f, 50.f, GetActorLocation(),
+		200.f, 500.f, 1.f, nullptr,
+		{this}, this, GetController());
+	
+	Destroy();
 }
 
 void AP_FPS::Input_Look_Implementation(FVector2D value)
@@ -138,8 +153,6 @@ void AP_FPS::BeginPlay()
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_Damaged);
 	_Health->OnDeath.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
 
-	CurrentStamina = MaxStamina;
-
 	if(_DefaultWeapon)
 	{
 		FActorSpawnParameters spawnParams;
@@ -152,7 +165,7 @@ void AP_FPS::BeginPlay()
 
 void AP_FPS::Handle_HealthDead(AController* causer)
 {
-	UE_LOG(LogTemp, Display, TEXT("You DIED........."));
+	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()));
 }
 
 void AP_FPS::Handle_Damaged(float current, float max, float change)
@@ -161,60 +174,3 @@ void AP_FPS::Handle_Damaged(float current, float max, float change)
 	OnPawnDamaged.Broadcast(current);
 }
 
-
-void AP_FPS::StartSprinting()
-{
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-	isSprinting = true;
-	GetWorldTimerManager().ClearTimer(_RegenTimeHandle);
-}
-
-void AP_FPS::StopSprinting()
-{
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	isSprinting = false;
-}
-
-void AP_FPS::StartStaminaDrain()
-{
-	if (GetWorldTimerManager().IsTimerActive(_DrainTimeHandle)) return;
-	GetWorldTimerManager().SetTimer(_DrainTimeHandle, this, &AP_FPS::DrainStamina, StaminaDrainTime, true);
-}
-
-void AP_FPS::StartStaminaRegen()
-{
-	if (GetWorldTimerManager().IsTimerActive(_DrainTimeHandle))
-	{
-		GetWorldTimerManager().ClearTimer(_DrainTimeHandle); 
-	}
-	if (!GetWorldTimerManager().IsTimerActive(_RegenTimeHandle))
-	{
-		GetWorldTimerManager().SetTimer(_RegenTimeHandle, this, &AP_FPS::RegenStamina, StaminaRegenTime, true);
-	}
-}
-
-
-void AP_FPS::DrainStamina()
-{
-	if (CurrentStamina <= 0)
-	{
-		StopSprinting();
-		GetWorldTimerManager().ClearTimer(_DrainTimeHandle);
-		return;
-	}
-
-	CurrentStamina = FMath::Clamp(CurrentStamina - StaminaDrainAmount, 0.0f, MaxStamina);
-	OnPawnStamina.Broadcast(CurrentStamina);
-}
-
-void AP_FPS::RegenStamina()
-{
-	if (isSprinting || CurrentStamina >= MaxStamina)
-	{
-		GetWorldTimerManager().ClearTimer(_RegenTimeHandle);
-		return;
-	}
-
-	CurrentStamina = FMath::Clamp(CurrentStamina + StaminaRegenAmount, 0.0f, MaxStamina);
-	OnPawnStamina.Broadcast(CurrentStamina);
-}

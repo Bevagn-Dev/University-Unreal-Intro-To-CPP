@@ -32,23 +32,10 @@ EBTNodeResult::Type UBTTask_InputFire::ExecuteTask(UBehaviorTreeComponent& Owner
 	
 	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 	{
-		IInputable::Execute_Input_FirePressed(pawn);
+		IInputable::Execute_Input_Explode(pawn);
 		return EBTNodeResult::InProgress;
 	}
 	
 	return EBTNodeResult::Failed;
 	
-}
-
-EBTNodeResult::Type UBTTask_InputFire::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
-{
-	const UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
-	UObject* pawn = BBComp->GetValueAsObject(Key_Pawn.SelectedKeyName);
-	
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
-	{
-		IInputable::Execute_Input_FireReleased(pawn);
-	}
-	
-	return EBTNodeResult::Failed;
 }

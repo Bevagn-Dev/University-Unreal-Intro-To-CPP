@@ -24,9 +24,15 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _InitSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _MaxSpeed;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	int _LifeSpan;
+	int32 _LifeSpan;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 _BounceCount;
 
 	FTimerHandle _LifeSpanHandle;
 	int32 _TimerCounter = 0;

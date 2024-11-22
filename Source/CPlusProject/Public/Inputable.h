@@ -41,6 +41,8 @@ public:
 	void Input_SprintPressed();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_SprintReleased();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_Explode();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
