@@ -35,7 +35,6 @@ EBTNodeResult::Type UBTTask_InputFire::ExecuteTask(UBehaviorTreeComponent& Owner
 		IInputable::Execute_Input_Explode(pawn);
 		return EBTNodeResult::InProgress;
 	}
-	
 	return EBTNodeResult::Failed;
 	
 }
