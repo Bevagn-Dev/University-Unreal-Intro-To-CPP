@@ -17,13 +17,16 @@ AP_FPS::AP_FPS()
 {
     PrimaryActorTick.bCanEverTick = true;
 
+
+    
     _Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     _Camera->SetupAttachment(RootComponent);
-
-    _Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-
     _WeaponAttachPoint = CreateDefaultSubobject<USpringArmComponent>(TEXT("Weapon Attach"));
     _WeaponAttachPoint->SetupAttachment(_Camera);
+    
+    
+    _Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+    
 }
 
 void AP_FPS::Input_FirePressed_Implementation()
@@ -55,8 +58,7 @@ void AP_FPS::Input_InteractPressed_Implementation()
 
     if (UKismetSystemLibrary::SphereTraceSingle(
         world, start, end, 20, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2),
-        false, ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true,
-        FLinearColor::Red, FLinearColor::Green, 5))
+        false, ActorsToIgnore, EDrawDebugTrace::None, hit, true))
     {
         AActor* hitActor = hit.GetActor();
         if (hitActor)
@@ -71,7 +73,7 @@ void AP_FPS::Input_InteractPressed_Implementation()
 
 void AP_FPS::Input_InteractReleased_Implementation()
 {
-    
+    //Here if I wanted to change it so it requires holding 
 }
 
 void AP_FPS::Input_JumpPressed_Implementation()
@@ -103,7 +105,7 @@ void AP_FPS::Input_SprintPressed_Implementation()
     }
     else
     {
-        StopSprinting(); // Stop sprinting if stamina is zero or the character is crouched
+        StopSprinting();
     }
 }
 
@@ -116,12 +118,12 @@ void AP_FPS::Input_SprintReleased_Implementation()
 void AP_FPS::Input_Explode_Implementation()
 {
         
-    UGameplayStatics::PlaySound2D(GetWorld(), _ExplosionSound);
+    UGameplayStatics::PlaySoundAtLocation(GetWorld(), _ExplosionSound, GetActorLocation(), 1.0f, 1.0f, 0.0f);
 
     UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _ExplosionSystem, GetActorLocation(), FRotator::ZeroRotator, FVector(1.0f));
     
-    UGameplayStatics::ApplyRadialDamageWithFalloff(GetWorld(), 100.f, 50.f, GetActorLocation(),
-        200.f, 500.f, 1.f, nullptr,
+    UGameplayStatics::ApplyRadialDamageWithFalloff(GetWorld(), 75.f, 25.f, GetActorLocation(),
+        200.f, 500.f, 1.5f, nullptr,
         {this}, this, GetController());
 
     Destroy();
@@ -241,4 +243,10 @@ void AP_FPS::RegenStamina()
 
     CurrentStamina = FMath::Clamp(CurrentStamina + StaminaRegenAmount, 0.0f, MaxStamina);
     OnPawnStamina.Broadcast(CurrentStamina);
+}
+
+FGenericTeamId AP_FPS::GetGenericTeamId() const
+{
+    FGenericTeamId _teamID = FGenericTeamId(_TeamID);
+    return _teamID;
 }

@@ -15,7 +15,7 @@ class CPLUSPROJECT_API UHealthComponent : public UActorComponent
 
 public:
 	UHealthComponent();
-
+	
 	UPROPERTY(BlueprintAssignable)
 	FHealthDeadSignature OnDeath;
 	UPROPERTY(BlueprintAssignable)
@@ -23,9 +23,9 @@ public:
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Settings")
 	float _MaxHealth;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health Settings")
 	float _CurrentHealth;
 	
 	virtual void BeginPlay() override;

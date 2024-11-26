@@ -28,6 +28,8 @@ protected:
 	float _InitSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _MaxSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<USoundBase> _ImpactSound;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 _LifeSpan;

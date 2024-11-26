@@ -209,7 +209,9 @@ void APC_FPS::OnPossess(APawn* InPawn)
 
 void APC_FPS::AddPoints_Implementation(int points)
 {
-   _HUDWidget->UpdateScore(points);
+   CurrentScore += points;
+   
+   _HUDWidget->UpdateScore(CurrentScore);
 }
 
 void APC_FPS::UpdateHealthUI(float CurrentHealth)
@@ -222,10 +224,5 @@ void APC_FPS::UpdateStaminaUI(float currentStamina)
    _HUDWidget->UpdateStamina(currentStamina / 100);
 }
 
-FGenericTeamId APC_FPS::GetGenericTeamId() const
-{
-   FGenericTeamId _teamID = FGenericTeamId(2);
-   return _teamID;
-}
 
 

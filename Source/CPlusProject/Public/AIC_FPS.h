@@ -25,6 +25,9 @@ protected:
 	TObjectPtr<UAIPerceptionComponent> _AIPerception;
 	TObjectPtr<UAISenseConfig_Sight> _AISense_Sight;
 
+	UBlackboardComponent* BlackboardComponent;
+	FName TargetActorKey = FName("TargetActor");
+
 private:
 	UFUNCTION()
 	void Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);

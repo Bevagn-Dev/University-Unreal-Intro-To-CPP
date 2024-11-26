@@ -32,10 +32,3 @@ void AFirstActor::BeginPlay()
 {
 	_Collider->OnComponentHit.AddUniqueDynamic(this, &AFirstActor::Handle_ColliderHit);
 }
-
-void AFirstActor::Interact_Implementation()
-{
-	IInteractable::Interact_Implementation();
-	
-
-}

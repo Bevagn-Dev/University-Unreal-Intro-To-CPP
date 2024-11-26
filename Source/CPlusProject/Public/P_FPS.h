@@ -1,6 +1,7 @@
 ﻿#pragma once
  
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "Inputable.h"
 #include "Pawnable.h"
 #include "WeaponType.h"
@@ -20,7 +21,7 @@ class UBehaviorTree;
 
 
 UCLASS(Abstract)
-class CPLUSPROJECT_API AP_FPS : public ACharacter, public IInputable , public IPawnable
+class CPLUSPROJECT_API AP_FPS : public ACharacter, public IInputable , public IPawnable, public  IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
  
@@ -63,6 +64,10 @@ protected:
 	TObjectPtr<UInputMappingContext> _InputMapping;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UBehaviorTree> _BehaviorTree;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	int _TeamID = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	bool _SpawnCamera;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UNiagaraSystem> _ExplosionSystem;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
@@ -114,4 +119,6 @@ private:
 	FTimerHandle _RegenTimeHandle;
 	int32 _TimerCounter = 0;
 	
+public:
+	virtual FGenericTeamId GetGenericTeamId() const override;
 };

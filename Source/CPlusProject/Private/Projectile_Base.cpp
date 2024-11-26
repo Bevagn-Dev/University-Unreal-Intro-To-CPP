@@ -27,6 +27,8 @@ void AProjectile_Base::Handle_Hit(UPrimitiveComponent* HitComponent, AActor* Oth
 {
 	if((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), _ImpactSound, GetActorLocation(), 1.0f, 1.0f, 0.0f);
+		
 		UGameplayStatics::ApplyDamage(OtherActor, _Damage, GetInstigatorController(), this, UDamageType::StaticClass());
 
 		if(OtherComp->IsSimulatingPhysics())
@@ -69,6 +71,8 @@ void AProjectile_Base::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 	GetWorld()->GetTimerManager().ClearTimer(_LifeSpanHandle);
 }
+
+
 
 
 

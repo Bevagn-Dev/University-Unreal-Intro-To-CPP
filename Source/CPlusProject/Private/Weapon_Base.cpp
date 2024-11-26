@@ -1,6 +1,7 @@
 ﻿#include "Weapon_Base.h"
 
 #include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AWeapon_Base::AWeapon_Base()
 {
@@ -36,6 +37,7 @@ void AWeapon_Base::StopFire()
 void AWeapon_Base::Fire()
 {
 	OnFire.Broadcast();
+	UGameplayStatics::PlaySound2D(GetWorld(), _GunFireSound);
 }
 
 

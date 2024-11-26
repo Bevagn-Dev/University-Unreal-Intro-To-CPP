@@ -15,7 +15,7 @@ class UInputAction;
 
 
 UCLASS(abstract)
-class CPLUSPROJECT_API APC_FPS : public APlayerController , public  IControllable , public  IGenericTeamAgentInterface
+class CPLUSPROJECT_API APC_FPS : public APlayerController , public  IControllable
 {
 	GENERATED_BODY()
 	
@@ -63,9 +63,9 @@ protected:
 	void UpdateHealthUI(float currentHealth);
 	UFUNCTION(BlueprintCallable)
 	void UpdateStaminaUI(float currentStamina);
-
-public:
-	virtual FGenericTeamId GetGenericTeamId() const override;
+	
+private:
+	int CurrentScore = 0;
 };
 
 

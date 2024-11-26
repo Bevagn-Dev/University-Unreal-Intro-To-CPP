@@ -38,6 +38,9 @@ protected:
 	float _FireDelay;
 	FTimerHandle _FireDelayTimer;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<USoundBase> _GunFireSound;
+	
 	UFUNCTION()
 	virtual void Fire();
 	

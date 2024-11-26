@@ -4,6 +4,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 
 AAIC_FPS::AAIC_FPS()
@@ -13,6 +15,9 @@ AAIC_FPS::AAIC_FPS()
 	_AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception"));
 
 	_AISense_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SenseSight"));
+	_AISense_Sight->SightRadius = 2000.0f;
+	_AISense_Sight->LoseSightRadius = 2500.0f;
+	_AISense_Sight->PeripheralVisionAngleDegrees = 90.0f;
 	_AISense_Sight->DetectionByAffiliation.bDetectEnemies = true;
 	_AISense_Sight->DetectionByAffiliation.bDetectFriendlies = false;
 	_AISense_Sight->DetectionByAffiliation.bDetectNeutrals = false;
@@ -53,6 +58,13 @@ void AAIC_FPS::OnPossess(APawn* InPawn)
 	{
 		RunBehaviorTree(IInputable::Execute_GetBehaviourTree(InPawn));
 	}
+
+	BlackboardComponent = GetBlackboardComponent();
+	
+	if (BlackboardComponent)
+	{
+		BlackboardComponent->SetValueAsObject(TargetActorKey, nullptr); 
+	}
 }
 
 void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
@@ -60,7 +72,10 @@ void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 	switch (Stimulus.Type)
 	{
 	case 0:
-		UE_LOG(LogTemp, Display, TEXT("Found Enemy %s"), *Actor->GetName());
+		if (BlackboardComponent)
+		{
+			BlackboardComponent->SetValueAsObject(TargetActorKey, Actor);
+		}
 		return;
 	default:
 		return;

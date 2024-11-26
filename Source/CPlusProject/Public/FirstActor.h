@@ -10,7 +10,7 @@ class UBoxComponent;
 class UArrowComponent;
 
 UCLASS(Abstract)
-class CPLUSPROJECT_API AFirstActor : public AActor , public IInteractable
+class CPLUSPROJECT_API AFirstActor : public AActor
 {
 	GENERATED_BODY()
 
@@ -30,8 +30,7 @@ protected:
 		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	virtual void BeginPlay() override;
-
-	virtual void Interact_Implementation() override;
+	
 };
 
 

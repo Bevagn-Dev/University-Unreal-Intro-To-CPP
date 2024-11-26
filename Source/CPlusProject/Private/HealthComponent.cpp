@@ -6,7 +6,6 @@ UHealthComponent::UHealthComponent()
 	_MaxHealth = 100.f;
 }
 
-
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
